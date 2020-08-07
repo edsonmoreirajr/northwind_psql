@@ -1,0 +1,3 @@
+docker network create --driver=bridge northwind_net
+docker volume create postgres_northwind
+docker volume create pgadmin4
