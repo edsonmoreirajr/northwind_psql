@@ -1,12 +1,39 @@
-version: '3'
-
+version: '3.8'
 services:
-  db:
-    image: postgres:12
-    environment:
-      POSTGRES_DB: northwind
-      POSTGRES_USER: northwind_user
-      POSTGRES_PASSWORD: thewindisblowing
-    volumes:
-      - ./dbdata:/var/lib/postgresql/data
-      - ./northwind.sql:/docker-entrypoint-initdb.d/northwind.sql
+    postgres_northwind:
+      image: postgres:latest
+      container_name: postgres_northwind 
+      environment:
+        POSTGRES_PASSWORD: "Postgres2020@"
+      ports:
+        - "5432:5432"
+      volumes:
+        - postgres_northwind:/var/lib/postgresql/data
+        - ./northwind.sql:/docker-entrypoint-initdb.d/northwind.sql
+      networks:
+        - northwind_net
+      
+    pgadmin4:
+      image: dpage/pgadmin4
+      container_name: pgadmin4
+      environment:
+        PGADMIN_DEFAULT_EMAIL: "emailqualquer@mail.com"
+        PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020@"
+      ports:
+        - "16543:80"
+      volumes:
+        - pgadmin4:/var/lib/pgadmin        
+      depends_on:
+        - postgres_northwind
+      networks:
+        - northwind_net
+
+volumes:
+  postgres_northwind:
+    external: true
+  pgadmin4:
+    external: true 
+
+networks:
+  northwind_net:
+    external: true    
